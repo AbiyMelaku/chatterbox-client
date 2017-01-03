@@ -2,10 +2,14 @@
 var app = {
   messages: [],
   friends: {},
-
   server: 'https://api.parse.com/1/classes/messages',
 
   init: function() {
+    //adding our listeners
+    app.$('#chats').on('click', '.username', app.handleUsernameClick);
+    app.$('#send').on('submit', app.handleSubmit);
+    app.$('#roomSelect').on('change', app.handleRoomChange);
+
 
   },
 
@@ -16,7 +20,7 @@ var app = {
       data: JSON.stringify(message),
       contentType: 'application/json',
       success: function(data) {
-        console.log('chatterbox:  Message sent');
+        console.log('chatterbox:  Message sent ', data);
       },
       error: function(data) {
         console.log('Failed to send message', data);
@@ -65,6 +69,7 @@ var app = {
   },
 
   renderRoom: function(roomname) {
+    //preventing cross scripting attacks by escaping with methods from the DOM
     var $option = $('<option/>').val(roomname).text(roomname);
     $('#roomSelect').append($option);
   },
@@ -72,7 +77,7 @@ var app = {
   handleUsernameClick: function (event) {
     var username = $(event).data('username');
     console.log('Ive been clicked');
-    console.log(username);
+    console.log('username ', username);
 
 
 
