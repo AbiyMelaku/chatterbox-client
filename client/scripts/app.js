@@ -49,8 +49,6 @@ var app = {
     var $chat = $('<div class="chat"></div>'); 
     
     $username.text(message.username + ': ').attr('data-roomname', message.roomname).attr('data-username', message.username).appendTo($chat);
-  //  var friend = '<a href=#>' + message.username + '</a>';
-    // $('#chats').append(friend);
     
     //adding to the friends class
     if (app.friends[message.username] === true) {
