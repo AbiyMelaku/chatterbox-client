@@ -1,5 +1,8 @@
 // YOUR CODE HERE:
 var app = {
+  messages: [],
+  friends: {},
+
   server: 'https://api.parse.com/1/classes/messages',
 
   init: function() {
@@ -25,8 +28,7 @@ var app = {
     $.ajax({
       url: app.server,
       type: 'GET',
-      data: message, //not sure about this, //{order -created at} ?????
-      contentType: 'application/json',
+      data: { order: '-createdAt' }, //not sure about this, //{order -created at} ?????
       success: function (data) {
         console.log('chatterbox: Message received', data); 
       },
@@ -41,16 +43,27 @@ var app = {
   },
 
   renderMessage: function(message) {
-    var $chat = $('<div class="chat"></div>'); 
-    var $username = $('<span class="username"/>');
-    var $message = $('<br><span/>');
+    //create a div to hold the chat
+    var $username = $('<span class="username" onclick="app.handleUsernameClick(event)"/>');
     
-    $username.text(message.username).appendTo($chat);
+    var $chat = $('<div class="chat"></div>'); 
+    
+    $username.text(message.username + ': ').attr('data-roomname', message.roomname).attr('data-username', message.username).appendTo($chat);
+  //  var friend = '<a href=#>' + message.username + '</a>';
+    // $('#chats').append(friend);
+    
+    //adding to the friends class
+    if (app.friends[message.username] === true) {
+      $username.addClass('friend');
+    }
+
+    var $message = $('<br><span/>');
     $message.text(message.text).appendTo($chat);
 
+    //adding chat to the user interface
     $('#chats').append($chat);
 
-
+    //$('.username').click(app.handleUsernameClick);
   },
 
   renderRoom: function(roomname) {
@@ -58,9 +71,37 @@ var app = {
     $('#roomSelect').append($option);
   },
 
-  handleUsernameClick: function () {
+  handleUsernameClick: function (event) {
+    var username = $(event).data('username');
+    console.log('Ive been clicked');
+    console.log(username);
 
-  }
+
+
+    if (username !== undefined) {
+      //Toggle add friend
+      app.friends[username] = !app.friends[username];
+      //checking username against XXS
+      var selector = '[data-username="' + username.replace(/"/g, '\\\"') + '"]';
+
+      var $usernames = $(selector).toggleClass('friend');
+    }
+
+    // $('.username').click( function () {
+    //   $('.username').toggleClass('.friend');
+    //   console.log('friend added');
+    // });
+  }//,
+
+  // handleSubmit: function() {
+  //   var message = {
+  //     username: app.username || 'admin',
+  //     text: $('#message').val() || 'test string',
+  //     roomname: app.roomname || 'lobby'
+  //   };
+
+  //   app.send(message);
+  // }
 
 };
 
@@ -69,6 +110,7 @@ var message = {
   text: 'trololo',
   roomname: '4chan'
 };
+
 
 
 
