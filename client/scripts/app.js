@@ -9,7 +9,12 @@ var app = {
     $('#chats').on('click', '.username', app.handleUsernameClick);
     $('#send').on('submit', app.handleSubmit);
     $('#roomSelect').on('change', app.handleRoomChange);
-
+    
+    
+    //fetching new messages on a interval
+    // setInterval(function() {
+    //   app.fetch(true);
+    // }, 3000);
 
   },
 
@@ -65,7 +70,7 @@ var app = {
     //adding chat to the user interface
     $('#chats').append($chat);
 
-    //$('.username').click(app.handleUsernameClick);
+  
   },
 
   renderRoom: function(roomname) {
@@ -94,17 +99,18 @@ var app = {
     //   $('.username').toggleClass('.friend');
     //   console.log('friend added');
     // });
-  }//,
+  },
 
-  // handleSubmit: function() {
-  //   var message = {
-  //     username: app.username || 'admin',
-  //     text: $('#message').val() || 'test string',
-  //     roomname: app.roomname || 'lobby'
-  //   };
+  handleSubmit: function(event) {
+    var message = {
+      username: app.username,
+      text: $('#message').val(),
+      roomname: app.roomname || 'lobby'
+    };
 
-  //   app.send(message);
-  // }
+    app.send(message);
+
+  }
 
 };
 
