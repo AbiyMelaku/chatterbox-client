@@ -35,7 +35,7 @@ var app = {
       contentType: 'application/json',
       success: function(data) {
         //clear the message input
-        app.$('message').val('');
+        $('#message').val('');
         
         // Trigger a fetch to update the messages, (pass in true to animate)
         app.fetch();
@@ -55,6 +55,9 @@ var app = {
       data: { order: '-createdAt' }, //not sure about this, //{order -created at} ?????
       success: function (data) {
         console.log('chatterbox: Message received', data); 
+        
+        // Don't bother if we have nothing to work with
+        if (!data.results || !data.results.length) { return; }
         
         // Store messages for caching later
         app.messages = data.results;
@@ -156,7 +159,7 @@ var app = {
   },
 
   handleUsernameClick: function (event) {
-    var username = $(event).data('username');
+    var username = $(event.target).data('username');
     console.log('Ive been clicked');
     console.log('username ', username);
 
@@ -176,6 +179,31 @@ var app = {
     //   console.log('friend added');
     // });
   },
+  
+  handleRoomChange: function(event) {
+
+    var selectIndex = $('#roomSelect').prop('selectedIndex');
+    // New room is always the first option
+    if (selectIndex === 0) {
+      var roomname = prompt('Enter room name');
+      if (roomname) {
+        // Set as the current room
+        app.roomname = roomname;
+
+        // Add the room to the menu
+        app.renderRoom(roomname);
+
+        // Select the menu option
+        $('#roomSelect').val(roomname);
+      }
+    } else {
+   
+      // Store as undefined for empty names
+      app.roomname = $('#roomSelect').val();
+    }
+    // Rerender messages
+    app.renderMessages(app.messages);
+  },
 
   handleSubmit: function(event) {
     var message = {
@@ -185,19 +213,20 @@ var app = {
     };
 
     app.send(message);
+    event.preventDefault();
 
   }
 
 };
 
-var message = {
-  username: 'shawndrost',
-  text: 'trololo',
-  roomname: '4chan'
-};
+// var message = {
+//   username: 'shawndrost',
+//   text: 'trololo',
+//   roomname: '4chan'
+// };
 
 
-console.log($('#roomSelect').val());
+//console.log($('#roomSelect').val());
 
 
 
