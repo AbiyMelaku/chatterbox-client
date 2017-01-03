@@ -6,9 +6,9 @@ var app = {
 
   init: function() {
     //adding our listeners
-    app.$('#chats').on('click', '.username', app.handleUsernameClick);
-    app.$('#send').on('submit', app.handleSubmit);
-    app.$('#roomSelect').on('change', app.handleRoomChange);
+    $('#chats').on('click', '.username', app.handleUsernameClick);
+    $('#send').on('submit', app.handleSubmit);
+    $('#roomSelect').on('change', app.handleRoomChange);
 
 
   },
