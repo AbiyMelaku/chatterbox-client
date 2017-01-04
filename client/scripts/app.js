@@ -22,7 +22,7 @@ var app = {
     //fetching new messages on a interval
     setInterval(function() {
       app.fetch(true);
-    }, 3000);
+    }, 5000);
     
 
   },
@@ -90,8 +90,8 @@ var app = {
 
   renderMessage: function(message) {
     //create a div to hold the chat
-    var $username = $('<span class="username" onclick="app.handleUsernameClick(event)"/>');
-    
+    // var $username = $('<span class="username" onclick="app.handleUsernameClick(event)"/>');
+    var $username = $('<span class="username"/>')
     var $chat = $('<div class="chat"></div>'); 
     
     $username.text(message.username + ': ').attr('data-roomname', message.roomname).attr('data-username', message.username).appendTo($chat);
@@ -170,7 +170,7 @@ var app = {
       app.friends[username] = !app.friends[username];
       //checking username against XXS
       var selector = '[data-username="' + username.replace(/"/g, '\\\"') + '"]';
-
+      console.log('selector:  ', selector);
       var $usernames = $(selector).toggleClass('friend');
     }
 
@@ -219,42 +219,3 @@ var app = {
 
 };
 
-// var message = {
-//   username: 'shawndrost',
-//   text: 'trololo',
-//   roomname: '4chan'
-// };
-
-
-//console.log($('#roomSelect').val());
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// $.ajax({
-//   // This is the url you should use to communicate with the parse API server.
-//   url: 'https://api.parse.com/1/classes/messages', 
-//   type: 'POST',
-//   data: JSON.stringify(message),
-//   contentType: 'application/json',
-//   success: function (data) {
-//     console.log('chatterbox: Message sent');
-//   },
-//   error: function (data) {
-//     // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
-//     console.error('chatterbox: Failed to send message', data);
-//   }
-// });
